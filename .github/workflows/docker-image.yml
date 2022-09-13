@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  IMAGE_NAME: webapplication3
-
 jobs:
 
   build:
@@ -16,21 +13,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file ./WebApplication3/Dockerfile --tag webappcontainer3:$(date +%s)
-      
-    - name: Log into registry
-      uses: docker/login-action@v1
+    - uses: actions/checkout@v2
+      name: checkout
+
+    - uses: actions/setup-dotnet@v1
       with:
-        registry: ${{ secrets.ACR_ENDPOINT }}
+        dotnet-version: '6.0.300' # SDK Version to use.
+    - run: dotnet build --configuration Release
+
+    - name: dotnet publish
+      run: |
+        dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/webapi3 
+    - uses: azure/docker-login@v1
+      with:
+        login-server: ${{ secrets.ACR_ENDPOINT }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-        
-    - name: Build & Push
-      uses: docker/build-push-action@v2
-      with:
-        push: true
-        build-args: |
-          version=${{ steps.tag.outputs.tag }}
-        tags: ${{ secrets.ACR_ENDPOINT }}/webappcontainer3:latest
+
+    - run: |
+        docker build -t ${{ secrets.ACR_ENDPOINT }}/webapi3:${{ github.sha }} .
+        docker push ${{ secrets.ACR_ENDPOINT }}/webapi3:${{ github.sha }} 
