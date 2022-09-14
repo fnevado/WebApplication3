@@ -41,5 +41,6 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: 'd231657'
+        slot-name: 'Production'
         publish-profile: ${{ secrets.D231657_PUBLISH_PROFILE }}
         images: '${{ secrets.ACR_ENDPOINT }}/webapi3:main'
