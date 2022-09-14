@@ -24,7 +24,7 @@ app.UseHttpsRedirection();
 app.MapGet("/add", (int num1, int num2, ICalculatorService calculatorService) =>
 {
     var result = calculatorService.Add(num1, num2);
-    return new { message = $"{num1} + {num2} = {result}" };
+    return new { message = $"The result of {num1} plus {num2} is {result}" };
 })
 .WithName("Add");
 
