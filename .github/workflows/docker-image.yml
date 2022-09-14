@@ -38,9 +38,9 @@ jobs:
         docker push ${{ secrets.ACR_ENDPOINT }}/webapi3:main
 #       docker build -f ./WebApplication3/Dockerfile -t ${{ secrets.ACR_ENDPOINT }}/webapi3:${{ github.sha }} .
 #       docker push ${{ secrets.ACR_ENDPOINT }}/webapi3:${{ github.sha }} 
-    - uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'd231657'
-        slot-name: 'Production'
-        publish-profile: ${{ secrets.D231657_PUBLISH_PROFILE }}
-        images: '${{ secrets.ACR_ENDPOINT }}/webapi3:main'
+#   - uses: azure/webapps-deploy@v2
+#     with:
+#       app-name: 'd231657'
+#       slot-name: 'Production'
+#       publish-profile: ${{ secrets.D231657_PUBLISH_PROFILE }}
+#       images: '${{ secrets.ACR_ENDPOINT }}/webapi3:main'
